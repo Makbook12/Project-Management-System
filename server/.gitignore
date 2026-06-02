@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Secrets — never commit these
+.env
+.env.*
+!.env.example
+
+# Uploads and logs
+server/uploads/
+*.log
+
+# Build output
+client/build/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
