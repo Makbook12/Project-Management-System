@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { tasksAPI, projectsAPI } from '../services/api';
@@ -32,9 +32,7 @@ export const TaskDetail = () => {
   const [formData, setFormData] = useState({});
   const [focused, setFocused]   = useState('');
 
-  useEffect(() => { fetchData(); }, [projectId, taskId]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       setLoading(true);
       const [tr, pr] = await Promise.all([
@@ -53,7 +51,9 @@ export const TaskDetail = () => {
       });
     } catch { setError('Failed to load task'); }
     finally { setLoading(false); }
-  };
+  }, [taskId, projectId]);
+
+  useEffect(() => { fetchData(); }, [fetchData]);
 
   const handleUpdate = async () => {
     try { await tasksAPI.update(taskId, formData); setEditMode(false); fetchData(); }

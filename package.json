@@ -1,0 +1,10 @@
+{
+  "name": "project-management",
+  "private": true,
+  "scripts": {
+    "db:local": "powershell -ExecutionPolicy Bypass -File scripts/use-local-mongo.ps1",
+    "server": "npm --prefix server start",
+    "client": "npm --prefix client start",
+    "setup:env": "node scripts/ensure-env.js"
+  }
+}
