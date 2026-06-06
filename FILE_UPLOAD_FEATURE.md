@@ -73,13 +73,4 @@ Users can now attach files (PDF, images, Word documents) when creating projects.
 ## Security Features
 - File type validation (MIME type checking)
 - File size limits (10MB per file)
-- Authorization checks (only project members can download/delete)
-- Automatic cleanup when project is deleted
-- Unique filenames to prevent conflicts
-
-## Error Handling
-- Invalid file types are rejected with clear error message
-- File size violations trigger validation error
-- Upload failures automatically clean up partial uploads
-- Secure error responses without exposing sensitive info
 
