@@ -70,7 +70,7 @@ Users can now attach files (PDF, images, Word documents) when creating projects.
 - Project cards display attachment count (📎 X attachment(s))
 - Click on project to view full details with attachment list
 
-## Security Features
+## Other Features
 - File type validation (MIME type checking)
 - File size limits (10MB per file)
 
