@@ -5,12 +5,14 @@ A full-stack project management application built with React, Node.js/Express, a
 ## Features
 
 - ✅ User authentication with JWT
+- ✅ Email verification and password reset
 - ✅ Create and manage projects
+- ✅ Project file attachments (upload and download)
 - ✅ Team collaboration with project members
+- ✅ Workspace API with admin/member roles
 - ✅ Task management with priority levels
 - ✅ Task status tracking (To-Do, In Progress, Completed)
 - ✅ Due dates and priority assignments
-- ✅ Real-time project updates
 
 ## Tech Stack
 
@@ -33,12 +35,16 @@ A full-stack project management application built with React, Node.js/Express, a
 ├── server/              # Express backend
 │   ├── models/         # MongoDB schemas
 │   │   ├── User.js
+│   │   ├── Workspace.js
 │   │   ├── Project.js
 │   │   └── Task.js
 │   ├── routes/         # API routes
 │   │   ├── auth.js
+│   │   ├── workspaces.js
 │   │   ├── projects.js
 │   │   └── tasks.js
+│   ├── services/
+│   │   └── emailService.js
 │   ├── middleware/
 │   │   └── auth.js     # JWT verification
 │   ├── server.js       # Main server file
@@ -49,8 +55,12 @@ A full-stack project management application built with React, Node.js/Express, a
     │   ├── pages/      # Page components
     │   │   ├── Login.js
     │   │   ├── Register.js
+    │   │   ├── ForgotPassword.js
+    │   │   ├── ResetPassword.js
+    │   │   ├── VerifyEmail.js
     │   │   ├── Dashboard.js
-    │   │   └── ProjectDetail.js
+    │   │   ├── ProjectDetail.js
+    │   │   └── TaskDetail.js
     │   ├── components/ # Reusable components
     │   ├── contexts/   # React context (Auth)
     │   ├── services/   # API calls
@@ -121,14 +131,30 @@ The app will open at `http://localhost:3000`
 ### Authentication
 - `POST /api/auth/register` - Create new account
 - `POST /api/auth/login` - Login user
+- `POST /api/auth/verify-email` - Verify email address
+- `POST /api/auth/forgot-password` - Request password reset
+- `POST /api/auth/reset-password` - Reset password with token
+- `GET /api/auth/me` - Get current user (protected)
+
+### Workspaces
+- `GET /api/workspaces` - Get user's workspaces
+- `GET /api/workspaces/:id` - Get single workspace
+- `POST /api/workspaces` - Create workspace
+- `PUT /api/workspaces/:id` - Update workspace
+- `DELETE /api/workspaces/:id` - Delete workspace
+- `POST /api/workspaces/:id/members` - Add member (admin/member role)
+- `PUT /api/workspaces/:id/members/:userId` - Update member role
+- `DELETE /api/workspaces/:id/members/:userId` - Remove member
 
 ### Projects
 - `GET /api/projects` - Get all user's projects
 - `GET /api/projects/:id` - Get single project
-- `POST /api/projects` - Create project
+- `POST /api/projects` - Create project (supports file attachments)
 - `PUT /api/projects/:id` - Update project
 - `DELETE /api/projects/:id` - Delete project
 - `POST /api/projects/:id/members` - Add team member
+- `GET /api/projects/:id/attachments/:filename` - Download attachment
+- `DELETE /api/projects/:id/attachments/:filename` - Delete attachment
 
 ### Tasks
 - `GET /api/tasks/project/:projectId` - Get project tasks
@@ -137,10 +163,13 @@ The app will open at `http://localhost:3000`
 - `PUT /api/tasks/:id` - Update task
 - `DELETE /api/tasks/:id` - Delete task
 
+### Health
+- `GET /api/health` - Server and database status
+
 ## Usage
 
-1. **Register/Login** - Create an account or sign in
-2. **Create Project** - Start a new project from dashboard
+1. **Register/Login** - Create an account or sign in (verify email if prompted)
+2. **Create Project** - Start a new project from the dashboard (optional file attachments)
 3. **Add Tasks** - Click into a project and add tasks
 4. **Manage Tasks** - Update status, priority, and due dates
 5. **Add Team Members** - Invite collaborators to projects
@@ -150,11 +179,14 @@ The app will open at `http://localhost:3000`
 ### Server Files
 - `server.js` - Main server setup with routes and middleware
 - `models/User.js` - User schema with authentication fields
-- `models/Project.js` - Project schema with owner and members
+- `models/Workspace.js` - Workspace schema with owner and member roles
+- `models/Project.js` - Project schema with owner, members, and attachments
 - `models/Task.js` - Task schema with status and priority
-- `routes/auth.js` - Register and login endpoints
-- `routes/projects.js` - Project CRUD and member management
+- `routes/auth.js` - Auth, email verification, and password reset
+- `routes/workspaces.js` - Workspace CRUD and member management
+- `routes/projects.js` - Project CRUD, members, and attachments
 - `routes/tasks.js` - Task CRUD operations
+- `services/emailService.js` - Verification and reset emails
 - `middleware/auth.js` - JWT token verification
 
 ### Client Files
@@ -164,5 +196,9 @@ The app will open at `http://localhost:3000`
 - `components/ProtectedRoute.js` - Route protection wrapper
 - `pages/Login.js` - Login page
 - `pages/Register.js` - Registration page
+- `pages/ForgotPassword.js` - Password reset request
+- `pages/ResetPassword.js` - Set new password
+- `pages/VerifyEmail.js` - Email verification
 - `pages/Dashboard.js` - Projects dashboard
 - `pages/ProjectDetail.js` - Project and tasks page
+- `pages/TaskDetail.js` - Single task view
